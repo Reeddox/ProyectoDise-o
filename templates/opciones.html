@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz de Detalles de Máquina</title>
+    <link rel="stylesheet" href="{% static 'css/Opciones.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-auto min-vh-100 sticky-top" style="width: 100px; background-color: #4C6EF5;">
+                <div class="d-flex flex-column align-items-center sticky-top">
+                    <div>
+                        <a href="/" class="d-flex align-items-center justify-content-center p-3 text-decoration-none">
+                            <i class="bi bi-box-arrow-in-left" style="color: white; font-size: 24px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Main Content -->
+            <div class="col">
+                <div class="main-content" style="text-align: center;">
+                    <div class="content-wrapper">
+                        <!-- Sección izquierda -->
+                        <div class="details-section">
+                            <a href="/Inventario/" class="back-button">←</a>
+                            <div class="machine-image">
+                                <img src="{% static 'images/Excavadora.png' %}" alt="Excavadora" />
+                            </div>
+                            <div class="machine-details">
+                                <p>
+                                    <span>N° Serie:</span>
+                                    <span>12345</span>
+                                </p>
+                                <p>
+                                    <span>Modelo:</span>
+                                    <span>Caterpillar</span>
+                                </p>
+                                <p>
+                                    <span>Tipo:</span>
+                                    <span>Excavadora</span>
+                                </p>
+                                <p>
+                                    <span>Capacidad:</span>
+                                    <span>16 M3</span>
+                                </p>
+                                <p>
+                                    <span>Estado:</span>
+                                    <span>Disponible</span>
+                                </p>
+                                <p>
+                                    <span>F.Rentado:</span>
+                                    <span>-------------</span>
+                                </p>
+                                <p>
+                                    <span>F.Devolución:</span>
+                                    <span>-------------</span>
+                                </p>
+                            </div>
+                        </div>
+            
+                        <!-- Sección derecha -->
+                        <div class="options-section">
+                            <h3>Opciones</h3>
+                            <button class="option-button" onclick="window.location.href='/Renta/'">Rentar</button>
+                            <button class="option-button">En Mantenimiento</button>
+                            <button class="option-button">Fuera de Servicio</button>
+                            <button class="option-button">Disponible</button>
+                            <div class="maintenance-info">
+                                <p>Información sobre el mantenimiento</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

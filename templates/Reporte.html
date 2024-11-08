@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/ReporteStyles.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>Reportes</title>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-icon">
+            <a href="/" class="d-flex align-items-center justify-content-center p-3 text-decoration-none">
+                <i class="bi bi-box-arrow-in-left"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Contenedor del reporte -->
+    <div class="report-container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <img src="{% static 'images/grafico.png' %}" alt="Pie Chart">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="report-box">
+                    <h5 class="report-title">Reporte</h5>
+                    <p class="report-item">Cantidad disponible: 4</p>
+                    <p class="report-item">Cantidad rentada: 6</p>
+                    <p class="report-item">Cantidad en mantenimiento: 10</p>
+                    <p class="report-item">Cantidad fuera de servicio: 15</p>
+                    <div class="report-history">
+                        <p class="history-item">Se realizó el proceso de renta de una Excavadora <br> 01/01/2010 - 05/10/2011</p>
+                        <hr>
+                        <p class="history-item">Se realizó el proceso de renta de un Tractor <br> 15/01/2010 - 23/09/2011</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-primary generate-btn">Generar</button>
+        </div>
+        
+        <!-- Botón para regresar a la ventana principal -->
+        <div class="text-center mt-4">
+            <a href="/Principal/" class="back-btn btn btn-primary mb-4 regresar-btn">← Volver</a>
+        </div>
+    </div>
+</body>
+</html>

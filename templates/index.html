@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/indexStyles.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Ventana Principal</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-auto min-vh-100 sticky-top" style="width: 100px; background-color: #4C6EF5;">
+                <div class="d-flex flex-column align-items-center sticky-top">
+                    <div>
+                        <a href="/" class="d-flex align-items-center justify-content-center p-3 text-decoration-none">
+                            <i class="bi bi-box-arrow-in-left" style="color: white; font-size: 24px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Contenido Principal -->
+            <div class="col d-flex justify-content-center align-items-center min-vh-100">
+                <div class="card shadow-lg p-4 d-flex flex-row align-items-center" style="border-radius: 15px; background-color: #b3e5fc; width: 700px;">
+                    
+                    <!-- Sección de botones -->
+                    <div class="button-container d-flex flex-column align-items-center me-4">
+                        <h1 class="text-center mb-4">Bienvenido, Usuario</h1>
+                        <button class="btn btn-primary btn-block mb-3" onclick="window.location.href='/Inventario/'">Inventario</button>
+                        <button class="btn btn-primary btn-block mb-3" onclick="window.location.href='/RegistrarM/'">Registrar Maquinaria</button>
+                        <button class="btn btn-primary btn-block mb-3" onclick="window.location.href='/Actualizar/'">Actualizar Datos</button>
+                        <button class="btn btn-primary btn-block mb-3" onclick="window.location.href='/Reporte/'">Generar Reporte</button>
+                        <button class="btn btn-danger btn-block mt-3" onclick="window.location.href='/'">Cerrar Sesión</button>
+                    </div>
+    
+                    <!-- Imagen tipo gráfico -->
+                    <div class="chart-container">
+                        <img src="{% static 'images/grafico.png' %}" alt="Gráfico" style="width: 100%; max-width: 500px; height: auto; border-radius: 15px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

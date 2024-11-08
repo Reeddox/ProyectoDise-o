@@ -1,0 +1,22 @@
+body {
+    background-color: #f0f8ff;
+}
+
+.card h3 {
+    font-weight: bold;
+    color: #000;
+}
+
+.form-control, .form-control-file, .btn {
+    font-size: 16px;
+}
+
+.btn-primary {
+    background-color: #4C6EF5;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #5c7cfa;
+    border: none;
+}
