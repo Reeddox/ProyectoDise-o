@@ -56,7 +56,8 @@ def RegistrarUsuario(request):
         if form.is_valid():
             form.save()
         return
-    data = {'form' : form}
+    data = {'form' : form,
+            'usuarios' : usuarios_ejemplo}
     return render(request, 'registroUsuario.html', data)
 
 def Renta(request):
