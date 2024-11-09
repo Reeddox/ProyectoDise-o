@@ -39,6 +39,16 @@ def Opciones(request):
     data = {}
     return render(request, 'opciones.html', data)
 
+usuarios_ejemplo = [
+        {
+            'nombre': 'Juan',
+            'segundo_nombre': 'Carlos',
+            'apellido': 'Pérez',
+            'segundo_apellido': 'García',
+            'correo_electronico': 'Usuario@gmail.com'
+        }
+    ]
+
 def RegistrarUsuario(request):
     form = FormUsuario()
     if request.method == 'POST':
