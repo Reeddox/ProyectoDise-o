@@ -52,6 +52,8 @@
                                     <th>Apellido</th>
                                     <th>Segundo Apellido</th>
                                     <th>Correo Electrónico</th>
+                                    <th>Actualizar</th>
+                                    <th>Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,6 +64,8 @@
                                     <td>{{ usuario.apellido }}</td>
                                     <td>{{ usuario.segundo_apellido }}</td>
                                     <td>{{ usuario.correo_electronico }}</td>
+                                    <td><a href="" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></td>
+                                    <td><a href="" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

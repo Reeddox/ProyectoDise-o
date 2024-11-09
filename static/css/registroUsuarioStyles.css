@@ -68,3 +68,32 @@ body {
     border-radius: 5px;
     margin-bottom: 1rem;
 }
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 0;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.table th {
+    background-color: #4C6EF5;
+    color: white;
+    padding: 12px;
+}
+
+.table td {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(76, 110, 245, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(76, 110, 245, 0.1);
+}
