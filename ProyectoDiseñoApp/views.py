@@ -1,23 +1,20 @@
 from django.shortcuts import render, redirect
-from ProyectoDiseñoApp.models import Usuario, Maquinaria
-from ProyectoDiseñoApp.forms import FormUsuario, FormMaquinaria, FormActualizarMaquinaria
+from django.contrib.auth import login
+from django.contrib import messages
+from ProyectoDiseñoApp.models import Usuario, RegistrarUsuario,Maquinaria
+from ProyectoDiseñoApp.forms import FormRegistrarUsuario, FormMaquinaria, FormActualizarMaquinaria, LoginForm
 
 # Create your views here.
 
 def Home(request):
+    form = LoginForm()
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        if email == 'Usuario@gmail.com' and password == '123456':
-            return redirect('/Principal/')
-        elif email == 'Admin@gmail.com' and password == 'admin':
-            return redirect('/RegistrarUsuario/')
-        else:
-            error_message = 'Correo electrónico o contraseña inválidos'
-    else:
-        error_message = ''
-    
-    return render(request, 'IniciarSesion.html', {'error_message': error_message})
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('')  # Cambia 'home' por tu URL
+    return render(request, 'IniciarSesion.html', {'form': form})
 
 def PaginaPrincipal(request):
     data = {}
@@ -50,15 +47,16 @@ usuarios_ejemplo = [
     ]
 
 def RegistrarUsuario(request):
-    form = FormUsuario()
     if request.method == 'POST':
-        form = FormUsuario(request.POST)
+        form = FormRegistrarUsuario(request.POST)
         if form.is_valid():
             form.save()
-        return
-    data = {'form' : form,
-            'usuarios' : usuarios_ejemplo}
-    return render(request, 'registroUsuario.html', data)
+            messages.success(request, 'Usuario registrado exitosamente')
+            # Crear un nuevo formulario vacío
+            form = FormRegistrarUsuario()
+    else:
+        form = FormRegistrarUsuario()
+    return render(request, 'registro.html', {'form': form})
 
 def Renta(request):
     data = {}

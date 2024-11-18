@@ -1,8 +1,24 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
 
 # Create your models here.
+class Usuario(AbstractUser):
+    email = models.EmailField('Correo Electrónico', unique=True)
+    password = models.CharField('Contraseña', max_length=128)
+    
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
-class Usuario(models.Model):
+    class Meta:
+        verbose_name = 'Usuario'
+        verbose_name_plural = 'Usuarios'
+        ordering = ['id']
+
+    def __str__(self):
+        return self.email
+
+class RegistrarUsuario(models.Model):
     nombre = models.CharField(max_length=100)
     segundo_nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)

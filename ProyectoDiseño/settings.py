@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import pymysql
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,8 +28,9 @@ SECRET_KEY = 'django-insecure-8per^$a19+y=ud22=hy5g79-)4znf&5ux5ggbxhf9paem)59uj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'proyectodise-o.onrender.com']
+ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'ProyectoDiseñoApp.Usuario'
 
 # Application definition
 
@@ -77,8 +80,10 @@ WSGI_APPLICATION = 'ProyectoDiseño.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Disenio_Eva3',
+        'USER' : 'root',
+        'PASSWORD' : ''
     }
 }
 
