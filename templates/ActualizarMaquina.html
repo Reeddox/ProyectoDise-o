@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load custom_tags %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,42 +11,48 @@
     <title>Actualizar datos de Maquinaria</title>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-
-            <!-- Sidebar -->
-            <div class="col-auto min-vh-100 sticky-top" style="width: 100px; background-color: #4C6EF5;">
-                <div class="d-flex flex-column align-items-center sticky-top">
+    <div class="container-fluid d-flex p-0" style="height: 100vh;">
+        <!-- Sidebar -->
+        <div class="col-auto sticky-top" style="width: 100px; background-color: #4C6EF5;">
+            <div class="d-flex flex-column align-items-center sticky-top">
+                <div>
                     <a href="/" class="d-flex align-items-center justify-content-center p-3 text-decoration-none">
                         <i class="bi bi-box-arrow-in-left" style="color: white; font-size: 24px;"></i>
                     </a>
                 </div>
             </div>
-
-            <!-- Contenido Principal -->
-            <div class="col d-flex justify-content-center align-items-center min-vh-100">
-                <div class="card shadow-lg p-4 d-flex flex-row align-items-center" style="border-radius: 15px; background-color: #e0f7fa; width: 700px;">
-                    
-                    <!-- Lista Usuarios -->
-                    <div class="main-content">
-                        <div class="form-container">
-                            <h2 class="form-title">Actualizar datos</h2>
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <div class="button-container">
-                                    <input type="submit" value="Actualizar" class="btn btn-info">
-                                    <a href="/Principal/" class="btn btn-info">Cancelar</a> 
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
         </div>  
+    
+        <!-- Formulario -->
+        <div class="container d-flex justify-content-center align-items-center" style="flex-grow: 1;">
+            <div class="card shadow p-4" style="width: 350px; background-color: #b3e5fc; border-radius: 20px;">
+                <h3 class="text-center mb-4">Actualizar Datos</h3>
+        
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="modelo">Nº Serie</label>
+                        <input type="text" class="form-control rounded-pill" id="n_serie" name="n_serie" value="{{ maquinaria.n_serie }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="modelo">Modelo</label>
+                        <input type="text" class="form-control rounded-pill" id="modelo" name="modelo" value="{{ maquinaria.modelo }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <input type="text" class="form-control rounded-pill" id="tipo" name="tipo" value="{{ maquinaria.tipo }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="capacidad">Capacidad</label>
+                        <input type="text" class="form-control rounded-pill" id="capacidad" name="capacidad" value="{{ maquinaria.capacidad }}">
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <button type="submit" class="btn btn-primary rounded-pill">Actualizar</button>
+                        <a href="/Inventario/" class="btn btn-secondary rounded-pill">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-
 </body>
 </html>

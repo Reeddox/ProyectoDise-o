@@ -28,49 +28,44 @@
                 <div class="main-content py-4">
                     <a href="/Principal/" class="back-btn btn btn-primary mb-4">← Volver</a>
 
+                    <!-- Search Bar -->
                     <div class="d-flex justify-content-center mb-4">
-                        <input type="text" class="form-control w-75 search-bar" placeholder="Buscar maquinaria por: (N°Serie, Modelo o Estado)">
+                        <form method="get" action="/Inventario/" class="w-75">
+                            <input type="text" name="q" value="{{ query }}" class="form-control search-bar" placeholder="Buscar maquinaria por: (N°Serie, Modelo o Estado)">
+                            {% if from_update_action %}
+                                <input type="hidden" name="from_update" value="true">
+                            {% endif %}
+                        </form>
                     </div>
 
+                    <!-- Maquinaria Cards -->
                     <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <div class="card item">
-                                <a href="/Opciones/"><img src="{% static 'images/Excavadora.png' %}" alt="Imagen Maquinaria" class="card-img-top"></a>
-                                <div class="card-body">
-                                    <p><strong>N°Serie:</strong> 12345</p>
-                                    <p><strong>Tipo:</strong> Excavadora</p>
-                                    <p><strong>Estado:</strong> Disponible</p>
+                        {% for maquinaria in maquinarias %}
+                            <div class="col-md-4 mb-4">
+                                <div class="card item">
+                                    <!-- Cambia el comportamiento según el modo -->
+                                    {% if modo == "actualizar_datos" %}
+                                        <a href="/Actualizar/?id={{ maquinaria.id }}">
+                                            <img src="{{ maquinaria.img.url }}" alt="Imagen Maquinaria" class="card-img-top">
+                                        </a>
+                                    {% else %}
+                                        <img src="{{ maquinaria.img.url }}" alt="Imagen Maquinaria" class="card-img-top">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <p><strong>N°Serie:</strong> {{ maquinaria.n_serie }}</p>
+                                        <p><strong>Modelo:</strong> {{ maquinaria.modelo }}</p>
+                                        <p><strong>Estado:</strong> {{ maquinaria.estado }}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-md-4 mb-4">
-                            <div class="card item">
-                                <img src="{% static 'images/Retroexcavadora.jpg' %}" alt="Imagen Maquinaria" class="card-img-top">
-                                <div class="card-body">
-                                    <p><strong>N°Serie:</strong> 67891</p>
-                                    <p><strong>Tipo:</strong> Retroexcavadora</p>
-                                    <p><strong>Estado:</strong> Fuera de servicio</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4 mb-4">
-                            <div class="card item">
-                                <img src="{% static 'images/unnamed.jpg' %}" alt="Imagen Maquinaria" class="card-img-top">
-                                <div class="card-body">
-                                    <p><strong>N°Serie:</strong> 75369</p>
-                                    <p><strong>Tipo:</strong> Tractor</p>
-                                    <p><strong>Estado:</strong> Rentada</p>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Optional JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

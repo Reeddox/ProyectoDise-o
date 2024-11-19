@@ -30,10 +30,24 @@
                     <!-- Sección de botones -->
                     <div class="button-container d-flex flex-column align-items-center me-4">
                         <h1 class="text-center mb-4">Bienvenido, Usuario</h1>
-                        <button class="btn btn-primary btn-block mb-3" onclick="window.location.href='/Inventario/'">Inventario</button>
+                        
+                        <!-- Inventario -->
+                        <form method="GET" action="/Inventario/" class="w-100">
+                            <button class="btn btn-primary btn-block mb-3" type="submit" name="modo" value="ver_inventario">Inventario</button>
+                        </form>
+
+                        <!-- Registrar Maquinaria -->
                         <button class="btn btn-primary btn-block mb-3" onclick="window.location.href='/RegistrarM/'">Registrar Maquinaria</button>
-                        <button class="btn btn-primary btn-block mb-3" onclick="window.location.href='/Actualizar/'">Actualizar Datos</button>
+                        
+                        <!-- Actualizar Datos -->
+                        <form method="GET" action="/Inventario/" class="w-100">
+                            <button class="btn btn-primary btn-block mb-3" type="submit" name="modo" value="actualizar_datos">Actualizar Datos</button>
+                        </form>
+                        
+                        <!-- Generar Reporte -->
                         <button class="btn btn-primary btn-block mb-3" onclick="window.location.href='/Reporte/'">Generar Reporte</button>
+                        
+                        <!-- Cerrar Sesión -->
                         <button class="btn btn-danger btn-block mt-3" onclick="window.location.href='/'">Cerrar Sesión</button>
                     </div>
     

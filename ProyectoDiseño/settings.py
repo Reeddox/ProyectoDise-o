@@ -30,8 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'ProyectoDiseñoApp.Usuario'
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -73,6 +71,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ProyectoDiseño.wsgi.application'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Database

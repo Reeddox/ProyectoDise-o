@@ -1,30 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-
+from django.contrib.auth.hashers import make_password
 
 # Create your models here.
-class Usuario(AbstractUser):
-    email = models.EmailField('Correo Electrónico', unique=True)
-    password = models.CharField('Contraseña', max_length=128)
-    
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
-    class Meta:
-        verbose_name = 'Usuario'
-        verbose_name_plural = 'Usuarios'
-        ordering = ['id']
-
-    def __str__(self):
-        return self.email
-
 class RegistrarUsuario(models.Model):
     nombre = models.CharField(max_length=100)
-    segundo_nombre = models.CharField(max_length=100)
+    segundo_nombre = models.CharField(max_length=100, blank=True, null=True)
     apellido = models.CharField(max_length=100)
-    segundo_apellido = models.CharField(max_length=100)
-    correo_electronico = models.EmailField()
-    contrasena = models.CharField(max_length=100)
+    segundo_apellido = models.CharField(max_length=100, blank=True, null=True)
+    correo_electronico = models.EmailField(unique=True)
+    contrasena = models.CharField(max_length=128)  # Se almacenará como hash
+    is_admin = models.BooleanField(default=False)  # Diferencia entre administrador y usuario normal
+
+    def save(self, *args, **kwargs):
+        # Hashea la contraseña solo si no está hasheada
+        if not self.contrasena.startswith('pbkdf2_sha256$'):
+            self.contrasena = make_password(self.contrasena)
+        super().save(*args, **kwargs)
+
+    def set_password(self, raw_password):
+        """Método para establecer una nueva contraseña."""
+        self.contrasena = make_password(raw_password)
 
 
 class Maquinaria(models.Model):
@@ -33,4 +28,4 @@ class Maquinaria(models.Model):
     tipo = models.CharField(max_length=100) 
     capacidad = models.CharField(max_length=100)
     estado = models.CharField(max_length=100)
-    img = models.CharField(max_length=500)
+    img = models.ImageField(upload_to='maquinarias/', blank=True, null=True)
