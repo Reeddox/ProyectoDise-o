@@ -2,40 +2,30 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f0f8ff;
-    min-height: 100vh;
 }
 
 /* Contenedor principal */
 .container-fluid {
     min-height: 100vh;
-    padding: 0;
-    margin: 0;
 }
 
 .row {
-    margin: 0;
     min-height: 100vh;
 }
 
 /* Sidebar */
 .col-auto {
-    padding: 0;
-    width: 80px !important;
+    width: 100px;
     background-color: #4C6EF5;
-    position: fixed;
-    height: 100vh;
-    left: 0;
-    top: 0;
-    z-index: 1000;
 }
 
 /* Contenido Principal */
 .col {
-    margin-left: 80px;
-    padding: 2rem;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #f0f8ff;
 }
 
 .main-content {
@@ -47,42 +37,34 @@ body {
 }
 
 .content-wrapper {
-    width: 100%;
-    background-color: #b3e5fc;
-    border-radius: 20px;
-    padding: 2rem;
     display: flex;
-    gap: 3rem;
-    margin: 0 auto;
+    gap: 2rem;
+    background-color: #b3e5fc;
+    border-radius: 15px;
+    padding: 2rem;
 }
 
-/* Sección Izquierda */
+/* Sección izquierda */
 .details-section {
     flex: 1.2;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
     background-color: white;
-    padding: 2rem;
     border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .back-button {
-    align-self: flex-start;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
+    display: inline-block;
     margin-bottom: 1rem;
+    font-size: 24px;
+    color: #4C6EF5;
+    text-decoration: none;
 }
 
 .machine-image {
     width: 100%;
-    height: 300px;
-    background-color: white;
-    border: 1px solid #dee2e6;
-    position: relative;
+    height: auto;
     margin-bottom: 1.5rem;
     border-radius: 8px;
     overflow: hidden;
@@ -95,25 +77,17 @@ body {
     border-radius: 8px;
 }
 
-.machine-details {
-    background-color: white;
-    border-radius: 12px;
-}
-
 .machine-details p {
-    margin: 0.75rem 0;
+    margin: 0.5rem 0;
+    font-size: 16px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    color: #333;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
 }
 
-.machine-details p span:first-child {
-    font-weight: 500;
-    color: #666;
-}
-
-/* Sección Derecha */
+/* Sección derecha */
 .options-section {
     flex: 0.8;
     display: flex;
@@ -123,24 +97,22 @@ body {
 
 .options-section h3 {
     margin: 0;
-    padding: 0.75rem;
     background-color: white;
-    border-radius: 8px;
+    padding: 0.5rem;
     text-align: center;
-    font-weight: normal;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .option-button {
-    width: 100%;
     padding: 0.75rem;
     border: none;
     border-radius: 8px;
     background-color: #4C6EF5;
     color: white;
-    font-size: 1rem;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.3s;
 }
 
 .option-button:hover {
@@ -148,22 +120,16 @@ body {
 }
 
 .maintenance-info {
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 1rem;
     background-color: white;
     border-radius: 8px;
-    min-height: 150px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 1200px) {
-    .content-wrapper {
-        flex-direction: column;
-        margin: 0 1rem;
-    }
-    
-    .details-section,
-    .options-section {
-        flex: 1;
-    }
+.maintenance-info textarea {
+    width: 100%;
+    border-radius: 8px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
 }

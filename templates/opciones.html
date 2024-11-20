@@ -21,64 +21,56 @@
                     </div>
                 </div>
             </div>
-        
+
             <!-- Main Content -->
             <div class="col">
-                <div class="main-content" style="text-align: center;">
-                    <div class="content-wrapper">
+                <div class="main-content py-4">
+                    <div class="content-wrapper d-flex justify-content-center align-items-center">
                         <!-- Sección izquierda -->
                         <div class="details-section">
                             <a href="/Inventario/" class="back-button">←</a>
                             <div class="machine-image">
-                                <img src="{% static 'images/Excavadora.png' %}" alt="Excavadora" />
+                                <img src="{{ maquinaria.img.url }}" alt="Imagen de la maquinaria">
                             </div>
                             <div class="machine-details">
-                                <p>
-                                    <span>N° Serie:</span>
-                                    <span>12345</span>
-                                </p>
-                                <p>
-                                    <span>Modelo:</span>
-                                    <span>Caterpillar</span>
-                                </p>
-                                <p>
-                                    <span>Tipo:</span>
-                                    <span>Excavadora</span>
-                                </p>
-                                <p>
-                                    <span>Capacidad:</span>
-                                    <span>16 M3</span>
-                                </p>
-                                <p>
-                                    <span>Estado:</span>
-                                    <span>Disponible</span>
-                                </p>
-                                <p>
-                                    <span>F.Rentado:</span>
-                                    <span>-------------</span>
-                                </p>
-                                <p>
-                                    <span>F.Devolución:</span>
-                                    <span>-------------</span>
-                                </p>
+                                <p><span>N° Serie:</span> <span>{{ maquinaria.n_serie }}</span></p>
+                                <p><span>Modelo:</span> <span>{{ maquinaria.modelo }}</span></p>
+                                <p><span>Tipo:</span> <span>{{ maquinaria.tipo }}</span></p>
+                                <p><span>Capacidad:</span> <span>{{ maquinaria.capacidad }}</span></p>
+                                <p><span>Estado:</span> <span id="estado-maquinaria">{{ maquinaria.estado }}</span></p>
+                                <p><span>F.Rentado:</span> <span>{{ ultima_renta.fecha_rentado|default:"--" }}</span></p>
+                                <p><span>F.Devolución:</span> <span>{{ ultima_renta.fecha_devolucion|default:"--" }}</span></p>
                             </div>
                         </div>
-            
+
                         <!-- Sección derecha -->
                         <div class="options-section">
                             <h3>Opciones</h3>
-                            <button class="option-button" onclick="window.location.href='/Renta/'">Rentar</button>
-                            <button class="option-button">En Mantenimiento</button>
-                            <button class="option-button">Fuera de Servicio</button>
-                            <button class="option-button">Disponible</button>
+                            <button class="option-button">
+                                <a href="/Renta/{{ maquinaria.id }}/" style="text-decoration: none; color: white;">Rentar</a>
+                            </button>
+                            <button class="option-button estado-boton" data-estado="En Mantenimiento">En Mantenimiento</button>
+                            <button class="option-button estado-boton" data-estado="Fuera de Servicio">Fuera de Servicio</button>
+                            <button class="option-button estado-boton" data-estado="Disponible">Disponible</button>
                             <div class="maintenance-info">
                                 <p>Información sobre el mantenimiento</p>
+                                <textarea 
+                                    class="form-control" 
+                                    id="mantenimiento-textarea" 
+                                    rows="5" 
+                                    name="informacion_mantenimiento"
+                                    placeholder="Escribe información sobre el mantenimiento">{{ maquinaria.informacion_mantenimiento|default_if_none:"" }}</textarea>
                             </div>
+                            <button class="option-button" id="guardar-boton">Guardar</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Script -->
+    <script src="{% static 'js/OpcionesScript.js' %}"></script>
 </body>
+
 </html>

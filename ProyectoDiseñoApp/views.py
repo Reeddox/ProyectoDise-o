@@ -3,8 +3,8 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib import messages
 from django.db.models import Q
-from ProyectoDiseñoApp.models import RegistrarUsuario, Maquinaria
-from ProyectoDiseñoApp.forms import FormRegistrarUsuario, FormRegistrarMaquinaria, FormActualizarMaquinaria, LoginForm
+from ProyectoDiseñoApp.models import RegistrarUsuario, Maquinaria, Renta
+from ProyectoDiseñoApp.forms import FormRegistrarUsuario, FormRegistrarMaquinaria, FormActualizarMaquinaria, LoginForm, RentarMaquinariaForm
 
 
 # Create your views here.
@@ -96,10 +96,26 @@ def RegistrarM(request):
 
     return render(request, 'RegistroMaquina.html', {'form': form})
 
-def Opciones(request):
-    data = {}
-    return render(request, 'opciones.html', data)
+def Opciones(request, id):
+    maquinaria = get_object_or_404(Maquinaria, id=id)
+    ultima_renta = maquinaria.rentas.last()
 
+    if request.method == "POST":
+        estado = request.POST.get("estado", maquinaria.estado)
+        mantenimiento_info = request.POST.get("mantenimiento_info", "")
+
+        maquinaria.estado = estado
+        maquinaria.informacion_mantenimiento = mantenimiento_info
+        maquinaria.save()
+
+        # Redirigir siempre a Inventario
+        return redirect('/Inventario/')
+
+    return render(
+        request,
+        "opciones.html",
+        {"maquinaria": maquinaria, "ultima_renta": ultima_renta},
+    )
 def RegistrarUsuarioView(request):
     if request.method == 'POST':
         form = FormRegistrarUsuario(request.POST)
@@ -121,9 +137,45 @@ def RegistrarUsuarioView(request):
     return render(request, 'registroUsuario.html', context)
 
 
-def Renta(request):
-    data = {}
-    return render(request, 'renta.html', data)
+def RentarMaquinaria(request, id):
+    maquinaria = get_object_or_404(Maquinaria, id=id)
+
+    if request.method == "POST":
+        form = RentarMaquinariaForm(request.POST)
+        if form.is_valid():
+            cliente = form.cleaned_data['cliente']
+            fecha_rentado = form.cleaned_data['fecha_rentado']
+            fecha_devolucion = form.cleaned_data['fecha_devolucion']
+
+            # Verificar si ya existe una renta activa para este cliente y maquinaria
+            renta_existente = Renta.objects.filter(
+                maquinaria=maquinaria,
+                cliente=cliente,
+                fecha_devolucion__gte=fecha_rentado  # Verificar solapamiento en las fechas
+            ).first()
+
+            if renta_existente:
+                # Actualizar las fechas en la renta existente
+                renta_existente.fecha_rentado = fecha_rentado
+                renta_existente.fecha_devolucion = fecha_devolucion
+                renta_existente.save()
+                messages.success(request, "La renta ha sido actualizada correctamente.")
+            else:
+                # Crear una nueva renta
+                nueva_renta = form.save(commit=False)
+                nueva_renta.maquinaria = maquinaria
+                nueva_renta.save()
+                messages.success(request, "La maquinaria ha sido rentada correctamente.")
+
+            # Cambiar el estado de la maquinaria
+            maquinaria.estado = "Rentada"
+            maquinaria.save()
+
+            return redirect(f"/Opciones/{id}/")
+    else:
+        form = RentarMaquinariaForm()
+
+    return render(request, "renta.html", {"form": form, "maquinaria": maquinaria})
 
 # Actualizar Maquinaria
 def ActualizarM(request):
@@ -137,8 +189,58 @@ def ActualizarM(request):
         maquinaria.capacidad = request.POST.get('capacidad')
         maquinaria.estado = request.POST.get('estado')
         maquinaria.save()  # Guarda los cambios en la base de datos
-        messages.success(request, 'Datos actualizados exitosamente.')
-        return redirect('/Inventario/')  # Redirige al inventario después de actualizar
+
+        # Diferenciar la redirección según origen
+        if request.GET.get('from') == 'inventario':
+            return redirect('/Inventario/')
+        else:
+            messages.success(request, 'Datos actualizados exitosamente.')
+            return redirect(f'/Actualizar/?id={maquinaria_id}')
 
     # Renderiza el formulario con los datos de la maquinaria
     return render(request, 'ActualizarMaquina.html', {'maquinaria': maquinaria})
+
+def EliminarMaquinaria(request, id):
+    maquinaria = get_object_or_404(Maquinaria, id=id)  # Busca la maquinaria en la base de datos
+    maquinaria.delete()  # Elimina la maquinaria
+    messages.success(request, "La maquinaria ha sido eliminada correctamente.")
+    return redirect('/Inventario/')  # Redirige al inventario después de eliminar
+
+def ActualizarUsuario(request, id):
+    usuario = get_object_or_404(RegistrarUsuario, id=id)
+
+    if request.method == "POST":
+        form = FormRegistrarUsuario(request.POST, instance=usuario)
+        if form.is_valid():
+            # Evita la validación del correo duplicado si el correo no cambia
+            if form.cleaned_data['correo_electronico'] == usuario.correo_electronico:
+                usuario.nombre = form.cleaned_data['nombre']
+                usuario.segundo_nombre = form.cleaned_data['segundo_nombre']
+                usuario.apellido = form.cleaned_data['apellido']
+                usuario.segundo_apellido = form.cleaned_data['segundo_apellido']
+                usuario.contrasena = form.cleaned_data['contrasena']
+                usuario.save()
+            else:
+                form.save()  # Permite actualizar si cambia el correo electrónico
+
+            messages.success(request, "Usuario actualizado correctamente.")
+            return redirect("/RegistrarUsuario/")
+        else:
+            messages.error(request, "Ocurrió un error al actualizar el usuario.")
+    else:
+        form = FormRegistrarUsuario(instance=usuario)
+
+    return render(request, "registroUsuario.html", {"form": form, "actualizar": True, "usuarios": RegistrarUsuario.objects.filter(is_admin=False)})
+
+def EliminarUsuario(request, id):
+    usuario = get_object_or_404(RegistrarUsuario, id=id)
+
+    # Asegurarse de no eliminar al admin
+    if usuario.is_admin:
+        messages.error(request, "No puedes eliminar al administrador.")
+        return redirect("/RegistrarUsuario/")
+
+    # Eliminar el usuario si no es admin
+    usuario.delete()
+    messages.success(request, "Usuario eliminado correctamente.")
+    return redirect("/RegistrarUsuario/")

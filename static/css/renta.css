@@ -1,80 +1,23 @@
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    margin: 0;
-    height: 100vh;
+    background-color: #f0f8ff;
 }
 
-.sidebar {
-    background-color: #5A67D8;
-    width: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.card h3 {
+    font-weight: bold;
+    color: #000;
 }
 
-.icon-user {
-    width: 24px;
-    height: 24px;
-    background-color: black;
-    border-radius: 50%;
+.form-control, .form-control-file, .btn {
+    font-size: 16px;
 }
 
-.form-container {
-    background-color: #B3E5FC;
-    padding: 20px;
-    border-radius: 10px;
-    margin: auto;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-form label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-form input[type="text"],
-form input[type="date"] {
-    width: calc(100% - 20px);
-    padding: 5px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: white;
-}
-
-.terms {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.terms input {
-    margin-right: 5px;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.btn-rentar,
-.btn-cancelar {
-    background-color: #5A67D8;
-    color: white;
+.btn-primary {
+    background-color: #4C6EF5;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
-.btn-rentar:hover,
-.btn-cancelar:hover {
-    background-color: #4C51BF;
+.btn-secondary {
+    background-color: #5c7cfa;
+    border: none;
 }
+

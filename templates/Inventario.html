@@ -31,33 +31,35 @@
                     <!-- Search Bar -->
                     <div class="d-flex justify-content-center mb-4">
                         <form method="get" action="/Inventario/" class="w-75">
-                            <input type="text" name="q" value="{{ query }}" class="form-control search-bar" placeholder="Buscar maquinaria por: (N°Serie, Modelo o Estado)">
-                            {% if from_update_action %}
-                                <input type="hidden" name="from_update" value="true">
-                            {% endif %}
+                            <input
+                                type="text"
+                                name="q"
+                                value="{{ query }}"
+                                class="form-control search-bar"
+                                placeholder="Buscar maquinaria por: (N°Serie, Modelo o Estado)"
+                            />
                         </form>
                     </div>
 
                     <!-- Maquinaria Cards -->
                     <div class="row">
                         {% for maquinaria in maquinarias %}
-                            <div class="col-md-4 mb-4">
-                                <div class="card item">
-                                    <!-- Cambia el comportamiento según el modo -->
-                                    {% if modo == "actualizar_datos" %}
-                                        <a href="/Actualizar/?id={{ maquinaria.id }}">
-                                            <img src="{{ maquinaria.img.url }}" alt="Imagen Maquinaria" class="card-img-top">
-                                        </a>
-                                    {% else %}
-                                        <img src="{{ maquinaria.img.url }}" alt="Imagen Maquinaria" class="card-img-top">
-                                    {% endif %}
-                                    <div class="card-body">
-                                        <p><strong>N°Serie:</strong> {{ maquinaria.n_serie }}</p>
-                                        <p><strong>Modelo:</strong> {{ maquinaria.modelo }}</p>
-                                        <p><strong>Estado:</strong> {{ maquinaria.estado }}</p>
-                                    </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card item">
+                                <img src="{{ maquinaria.img.url }}" alt="Imagen Maquinaria" class="card-img-top">
+                                <div class="card-body">
+                                    <p><strong>N°Serie:</strong> {{ maquinaria.n_serie }}</p>
+                                    <p><strong>Modelo:</strong> {{ maquinaria.modelo }}</p>
+                                    <p><strong>Estado:</strong> {{ maquinaria.estado }}</p>
+                                    <!-- Botón para la ventana de Opciones -->
+                                    <a href="/Opciones/{{ maquinaria.id }}/" class="btn btn-primary btn-sm">Opciones</a>
+                                    <!-- Botón para la página de Actualizar -->
+                                    <a href="/Actualizar/?id={{ maquinaria.id }}&from=inventario" class="btn btn-secondary btn-sm">Actualizar</a>
+                                    <!-- Botón para eliminar maquinaria -->
+                                    <button class="btn btn-danger btn-sm" onclick="confirmarEliminacion({{ maquinaria.id }})">Eliminar</button>
                                 </div>
                             </div>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -65,9 +67,11 @@
         </div>
     </div>
 
-    <!-- Optional JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Script -->
+    <script src="{% static 'js/Inventario.js' %}"></script>
 </body>
+
 </html>
