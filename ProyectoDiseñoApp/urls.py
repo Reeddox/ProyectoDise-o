@@ -17,5 +17,6 @@ urlpatterns = [
     path('Opciones/<int:id>/', views.Opciones),
     path('Actualizar/', views.ActualizarM),
     path('EliminarMaquinaria/<int:id>/', views.EliminarMaquinaria), 
-    path('Renta/<int:id>/', views.RentarMaquinaria)
+    path('Renta/<int:id>/', views.RentarMaquinaria),
+    path('GenerarPDF/', views.generar_pdf, name='generar_pdf')
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

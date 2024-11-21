@@ -22,18 +22,18 @@
                     </div>
                 </div>
             </div>
-    
+
             <!-- Contenido Principal -->
             <div class="col d-flex justify-content-center align-items-center min-vh-100">
-                <div class="card shadow-lg p-4 d-flex flex-row align-items-center" style="border-radius: 15px; background-color: #b3e5fc; width: 700px;">
+                <div class="card shadow-lg p-4 d-flex flex-row align-items-center justify-content-between" style="border-radius: 15px; background-color: #e0f7fa; width: 800px; height: 450px;">
                     
                     <!-- Sección de botones -->
-                    <div class="button-container d-flex flex-column align-items-center me-4">
+                    <div class="button-container d-flex flex-column align-items-center me-4" style="width: 280px;">
                         <h1 class="text-center mb-4">Bienvenido, Usuario</h1>
                         
                         <!-- Inventario -->
-                        <form method="GET" action="/Inventario/" class="w-100">
-                            <button class="btn btn-primary btn-block mb-3" type="submit" name="modo" value="ver_inventario">Inventario</button>
+                        <form method="GET" action="/Inventario/" class="w-100 mb-3">
+                            <button class="btn btn-primary btn-block" type="submit" name="modo" value="ver_inventario">Inventario</button>
                         </form>
 
                         <!-- Registrar Maquinaria -->
@@ -45,14 +45,25 @@
                         <!-- Cerrar Sesión -->
                         <button class="btn btn-danger btn-block mt-3" onclick="window.location.href='/'">Cerrar Sesión</button>
                     </div>
-    
-                    <!-- Imagen tipo gráfico -->
-                    <div class="chart-container">
-                        <img src="{% static 'images/grafico.png' %}" alt="Gráfico" style="width: 100%; max-width: 500px; height: auto; border-radius: 15px;">
+
+                    <!-- Dashboard circular -->
+                    <div class="chart-container principal-chart">
+                        <canvas id="maquinariaChart"></canvas>
+                        <div id="chart-data"
+                            data-disponible="{{ disponible }}"
+                            data-rentada="{{ rentada }}"
+                            data-en-mantenimiento="{{ en_mantenimiento }}"
+                            data-fuera-de-servicio="{{ fuera_de_servicio }}">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Importar Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Importar el archivo de JS externo -->
+    <script src="{% static 'js/IndexGrafico.js' %}"></script>
 </body>
 </html>

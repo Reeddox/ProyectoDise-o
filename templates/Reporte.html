@@ -10,46 +10,68 @@
     <title>Reportes</title>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-icon">
-            <a href="/" class="d-flex align-items-center justify-content-center p-3 text-decoration-none">
-                <i class="bi bi-box-arrow-in-left"></i>
-            </a>
-        </div>
-    </div>
-    
-    <!-- Contenedor del reporte -->
-    <div class="report-container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
-                <div class="chart-container">
-                    <img src="{% static 'images/grafico.png' %}" alt="Pie Chart">
+            <!-- Sidebar -->
+            <div class="col-auto min-vh-100 sticky-top" style="width: 100px; background-color: #4C6EF5;">
+                <div class="d-flex flex-column align-items-center sticky-top">
+                    <div>
+                        <a href="/" class="d-flex align-items-center justify-content-center p-3 text-decoration-none">
+                            <i class="bi bi-box-arrow-in-left" style="color: white; font-size: 24px;"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="report-box">
-                    <h5 class="report-title">Reporte</h5>
-                    <p class="report-item">Cantidad disponible: 4</p>
-                    <p class="report-item">Cantidad rentada: 6</p>
-                    <p class="report-item">Cantidad en mantenimiento: 10</p>
-                    <p class="report-item">Cantidad fuera de servicio: 15</p>
-                    <div class="report-history">
-                        <p class="history-item">Se realizó el proceso de renta de una Excavadora <br> 01/01/2010 - 05/10/2011</p>
-                        <hr>
-                        <p class="history-item">Se realizó el proceso de renta de un Tractor <br> 15/01/2010 - 23/09/2011</p>
+
+            <!-- Contenedor principal del reporte -->
+            <div class="col d-flex justify-content-center align-items-center min-vh-100">
+                <div class="report-container">
+                    <div class="row">
+                        <!-- Dashboard circular -->
+                        <div class="chart-container reporte-chart">
+                            <canvas id="maquinariaChart"></canvas>
+                            <div id="chart-data"
+                                data-disponible="{{ disponible }}"
+                                data-rentada="{{ rentada }}"
+                                data-en-mantenimiento="{{ en_mantenimiento }}"
+                                data-fuera-de-servicio="{{ fuera_de_servicio }}">
+                            </div>
+                        </div>
+                        
+                        <!-- Resumen del reporte -->
+                        <div class="col-md-6" style="margin-left: 10%;">
+                            <div class="report-box">
+                                <h5 class="report-title">Reporte</h5>
+                                <p class="report-item">Maquinaria disponible: {{ disponible }}</p>
+                                <p class="report-item">Maquinaria rentada: {{ rentada }}</p>
+                                <p class="report-item">Maquinaria en mantenimiento: {{ en_mantenimiento }}</p>
+                                <p class="report-item">Maquinaria fuera de servicio: {{ fuera_de_servicio }}</p>
+                                <div class="report-history">
+                                    {% for renta in rentas %}
+                                    <p class="history-item">Se realizó el proceso de renta de {{ renta.maquinaria.modelo }} <br>
+                                    {{ renta.fecha_rentado }} - {{ renta.fecha_devolucion }}</p>
+                                    <hr>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botón Generar y Volver -->
+                    <div class="text-center button-container" {% if pdf %} style="display: none;"{% endif %}>
+                        <form method="POST" action="{% url 'generar_pdf' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary generate-btn no-pdf">Generar PDF</button>
+                        </form>
+                        <a href="/Principal/" class="btn btn-primary regresar-btn no-pdf">← Volver</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="text-center mt-4">
-            <button class="btn btn-primary generate-btn">Generar</button>
-        </div>
-        
-        <!-- Botón para regresar a la ventana principal -->
-        <div class="text-center mt-4">
-            <a href="/Principal/" class="back-btn btn btn-primary mb-4 regresar-btn">← Volver</a>
-        </div>
     </div>
+
+    <!-- Importación de scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/IndexGrafico.js' %}"></script>
 </body>
 </html>

@@ -1,6 +1,9 @@
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.hashers import check_password, make_password
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa #pip install xhtml2pdf
 from django.contrib import messages
 from django.db.models import Q
 from ProyectoDiseñoApp.models import RegistrarUsuario, Maquinaria, Renta
@@ -52,14 +55,20 @@ def Home(request):
     return render(request, 'IniciarSesion.html', {'form': form})
 
 def PaginaPrincipal(request):
-    if request.method == "POST":
-        if "actualizar_datos" in request.POST:  # Botón para "Actualizar Datos"
-            request.session['allow_update'] = True
-            return redirect('/Inventario/')
-        if "ver_inventario" in request.POST:  # Botón para "Inventario"
-            request.session['allow_update'] = False
-            return redirect('/Inventario/')
-    return render(request, 'index.html')
+    # Obtener conteos de estados de maquinaria desde la base de datos
+    total_disponible = Maquinaria.objects.filter(estado='Disponible').count()
+    total_rentada = Maquinaria.objects.filter(estado='Rentada').count()
+    total_mantenimiento = Maquinaria.objects.filter(estado='En mantenimiento').count()
+    total_fuera_servicio = Maquinaria.objects.filter(estado='Fuera de servicio').count()
+
+    # Pasar datos al contexto
+    context = {
+        'disponible': total_disponible,
+        'rentada': total_rentada,
+        'en_mantenimiento': total_mantenimiento,
+        'fuera_de_servicio': total_fuera_servicio
+    }
+    return render(request, 'index.html', context)
 
 def Inventario(request):
     # Capturamos el parámetro "modo" de la URL
@@ -78,9 +87,25 @@ def Inventario(request):
     # Renderiza el inventario con el modo pasado
     return render(request, 'Inventario.html', {'maquinarias': maquinarias, 'query': query, 'modo': modo})
 
+
 def Reporte(request):
-    data = {}
-    return render(request, 'Reporte.html', data)
+    # Datos para el gráfico
+    total_disponible = Maquinaria.objects.filter(estado='Disponible').count()
+    total_rentada = Maquinaria.objects.filter(estado='Rentada').count()
+    total_mantenimiento = Maquinaria.objects.filter(estado='En mantenimiento').count()
+    total_fuera_servicio = Maquinaria.objects.filter(estado='Fuera de servicio').count()
+
+    # Historial de rentas
+    rentas = Renta.objects.all()
+
+    context = {
+        'disponible': total_disponible,
+        'rentada': total_rentada,
+        'en_mantenimiento': total_mantenimiento,
+        'fuera_de_servicio': total_fuera_servicio,
+        'rentas': rentas,
+    }
+    return render(request, 'Reporte.html', context)
 
 def RegistrarM(request):
     if request.method == 'POST':
@@ -244,3 +269,21 @@ def EliminarUsuario(request, id):
     usuario.delete()
     messages.success(request, "Usuario eliminado correctamente.")
     return redirect("/RegistrarUsuario/")
+
+
+def generar_pdf(request):
+    context = {
+        "disponible": Maquinaria.objects.filter(estado="Disponible").count(),
+        "rentada": Maquinaria.objects.filter(estado="Rentada").count(),
+        "en_mantenimiento": Maquinaria.objects.filter(estado="En mantenimiento").count(),
+        "fuera_de_servicio": Maquinaria.objects.filter(estado="Fuera de servicio").count(),
+        "rentas": Renta.objects.all(),
+        "pdf": True,  # Variable para identificar el contexto del PDF
+    }
+    html = render_to_string("Reporte.html", context)
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = "attachment; filename=Reporte_Maquinaria.pdf"
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse("Error al generar el PDF", status=400)
+    return response
