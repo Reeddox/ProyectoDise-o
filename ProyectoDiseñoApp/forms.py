@@ -93,46 +93,154 @@ class FormRegistrarUsuario(forms.ModelForm):
 
 
 class FormRegistrarMaquinaria(forms.ModelForm):
+    # Opciones para los modelos (marcas)
+    MODELO_CHOICES = [
+        ('Caterpillar', 'Caterpillar'),
+        ('Komatsu', 'Komatsu'),
+        ('Hitachi', 'Hitachi'),
+        ('John Deere', 'John Deere'),
+        ('Volvo', 'Volvo'),
+        ('Liebherr', 'Liebherr'),
+        ('Doosan', 'Doosan'),
+        ('JCB', 'JCB'),
+        ('Hyundai', 'Hyundai'),
+        ('Case', 'Case'),
+    ]
+
+    # Opciones para los tipos de maquinaria
+    TIPO_CHOICES = [
+        ('Excavadora', 'Excavadora'),
+        ('Cargadora Frontal', 'Cargadora Frontal'),
+        ('Retroexcavadora', 'Retroexcavadora'),
+        ('Grúa Torre', 'Grúa Torre'),
+        ('Montacargas', 'Montacargas'),
+        ('Bulldozer', 'Bulldozer'),
+        ('Motoniveladora', 'Motoniveladora'),
+        ('Compactadora', 'Compactadora'),
+        ('Minicargadora', 'Minicargadora'),
+        ('Perforadora', 'Perforadora'),
+    ]
+
+    modelo = forms.ChoiceField(
+        choices=MODELO_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        })
+    )
+
+    tipo = forms.ChoiceField(
+        choices=TIPO_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        })
+    )
+
     class Meta:
         model = Maquinaria
-        fields = ['n_serie', 'modelo', 'tipo', 'capacidad', 'estado', 'img']
+        fields = ['n_serie', 'modelo', 'tipo', 'capacidad', 'img']
         widgets = {
             'n_serie': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ingrese el número de serie'
             }),
-            'modelo': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Ingrese el modelo'
-            }),
-            'tipo': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Ingrese el tipo'
-            }),
             'capacidad': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ingrese la capacidad'
             }),
-            'estado': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Ingrese el estado'
-            }),
             'img': forms.FileInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Subir una imagen'
+                'class': 'form-control'
             }),
         }
+        error_messages = {
+            'n_serie': {
+                'required': 'El número de serie es obligatorio.',
+            },
+            'capacidad': {
+                'required': 'La capacidad es obligatoria.',
+            },
+            'img': {
+                'required': 'Debe subir una imagen.',
+            },
+        }
+
+    def clean_n_serie(self):
+        n_serie = self.cleaned_data.get('n_serie')
+        if not n_serie:
+            raise forms.ValidationError("El número de serie es obligatorio.")
+        if len(n_serie) < 5:
+            raise forms.ValidationError("El número de serie debe tener al menos 5 caracteres.")
+        return n_serie
+
+    def clean_capacidad(self):
+        capacidad = self.cleaned_data.get('capacidad')
+        if not capacidad:
+            raise forms.ValidationError("La capacidad es obligatoria.")
+        if not capacidad.isdigit():
+            raise forms.ValidationError("La capacidad debe ser un número.")
+        return capacidad
+
+    def clean_img(self):
+        img = self.cleaned_data.get('img')
+        if not img:
+            raise forms.ValidationError("Debe subir una imagen.")
+        return img
 
 
 class FormActualizarMaquinaria(forms.ModelForm):
+    # Opciones para los modelos (marcas)
+    MODELO_CHOICES = [
+        ('Caterpillar', 'Caterpillar'),
+        ('Komatsu', 'Komatsu'),
+        ('Hitachi', 'Hitachi'),
+        ('John Deere', 'John Deere'),
+        ('Volvo', 'Volvo'),
+        ('Liebherr', 'Liebherr'),
+        ('Doosan', 'Doosan'),
+        ('JCB', 'JCB'),
+        ('Hyundai', 'Hyundai'),
+        ('Case', 'Case'),
+    ]
+
+    # Opciones para los tipos de maquinaria
+    TIPO_CHOICES = [
+        ('Excavadora', 'Excavadora'),
+        ('Cargadora Frontal', 'Cargadora Frontal'),
+        ('Retroexcavadora', 'Retroexcavadora'),
+        ('Grúa Torre', 'Grúa Torre'),
+        ('Montacargas', 'Montacargas'),
+        ('Bulldozer', 'Bulldozer'),
+        ('Motoniveladora', 'Motoniveladora'),
+        ('Compactadora', 'Compactadora'),
+        ('Minicargadora', 'Minicargadora'),
+        ('Perforadora', 'Perforadora'),
+    ]
+
+    modelo = forms.ChoiceField(
+        choices=MODELO_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-control rounded-pill'
+        })
+    )
+
+    tipo = forms.ChoiceField(
+        choices=TIPO_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-control rounded-pill'
+        })
+    )
+
     class Meta:
         model = Maquinaria
-        fields = ['modelo', 'tipo', 'capacidad', 'estado']
+        fields = ['n_serie', 'modelo', 'tipo', 'capacidad']
         widgets = {
-            'modelo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Modelo'}),
-            'tipo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tipo'}),
-            'capacidad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Capacidad'}),
-            'estado': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Estado'}),
+            'n_serie': forms.TextInput(attrs={
+                'class': 'form-control rounded-pill',
+                'placeholder': 'Número de serie'
+            }),
+            'capacidad': forms.TextInput(attrs={
+                'class': 'form-control rounded-pill',
+                'placeholder': 'Capacidad'
+            }),
         }
         
 

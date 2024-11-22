@@ -3,6 +3,7 @@ body {
 }
 
 .registro-container {
+    margin-top: 50px;
     background-color: #a8d8f0;
     padding: 2rem;
     border-radius: 15px;

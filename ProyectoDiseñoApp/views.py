@@ -111,7 +111,9 @@ def RegistrarM(request):
     if request.method == 'POST':
         form = FormRegistrarMaquinaria(request.POST, request.FILES)  # Maneja datos y archivos
         if form.is_valid():
-            form.save()  # Guarda la maquinaria directamente en la base de datos
+            maquinaria = form.save(commit=False)  # No guarda aún en la base de datos
+            maquinaria.estado = 'Disponible'  # Asignar el estado predeterminado
+            maquinaria.save()  # Guarda en la base de datos
             messages.success(request, 'Maquinaria registrada exitosamente.')
             return redirect('/Inventario/')  # Redirige al inventario
         else:
@@ -205,25 +207,27 @@ def RentarMaquinaria(request, id):
 # Actualizar Maquinaria
 def ActualizarM(request):
     maquinaria_id = request.GET.get('id')  # Obtiene el ID de la maquinaria desde la URL
-    maquinaria = Maquinaria.objects.get(id=maquinaria_id)  # Busca la maquinaria en la base de datos
+    maquinaria = get_object_or_404(Maquinaria, id=maquinaria_id)  # Busca la maquinaria en la base de datos
 
     if request.method == 'POST':
-        # Procesar el formulario enviado
-        maquinaria.modelo = request.POST.get('modelo')
-        maquinaria.tipo = request.POST.get('tipo')
-        maquinaria.capacidad = request.POST.get('capacidad')
-        maquinaria.estado = request.POST.get('estado')
-        maquinaria.save()  # Guarda los cambios en la base de datos
-
-        # Diferenciar la redirección según origen
-        if request.GET.get('from') == 'inventario':
-            return redirect('/Inventario/')
+        # Procesar el formulario enviado con datos y archivos
+        form = FormActualizarMaquinaria(request.POST, instance=maquinaria)
+        if form.is_valid():
+            form.save()  # Guarda los cambios en la base de datos
+            # Diferenciar la redirección según origen
+            if request.GET.get('from') == 'inventario':
+                return redirect('/Inventario/')
+            else:
+                messages.success(request, 'Datos actualizados exitosamente.')
+                return redirect(f'/Actualizar/?id={maquinaria_id}')
         else:
-            messages.success(request, 'Datos actualizados exitosamente.')
-            return redirect(f'/Actualizar/?id={maquinaria_id}')
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        # Inicializar el formulario con los datos de la maquinaria
+        form = FormActualizarMaquinaria(instance=maquinaria)
 
-    # Renderiza el formulario con los datos de la maquinaria
-    return render(request, 'ActualizarMaquina.html', {'maquinaria': maquinaria})
+    # Renderiza el formulario con los datos iniciales cargados
+    return render(request, 'ActualizarMaquina.html', {'form': form, 'maquinaria': maquinaria})
 
 def EliminarMaquinaria(request, id):
     maquinaria = get_object_or_404(Maquinaria, id=id)  # Busca la maquinaria en la base de datos

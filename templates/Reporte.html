@@ -39,7 +39,7 @@
                         </div>
                         
                         <!-- Resumen del reporte -->
-                        <div class="col-md-6" style="margin-left: 10%;">
+                        <div class="col-md-6">
                             <div class="report-box">
                                 <h5 class="report-title">Reporte</h5>
                                 <p class="report-item">Maquinaria disponible: {{ disponible }}</p>
@@ -61,15 +61,15 @@
                     <div class="text-center button-container" {% if pdf %} style="display: none;"{% endif %}>
                         <form method="POST" action="{% url 'generar_pdf' %}" style="display: inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary generate-btn no-pdf">Generar PDF</button>
+                            <button type="submit" class="btn btn-primary generate-btn">Generar PDF</button>
                         </form>
-                        <a href="/Principal/" class="btn btn-primary regresar-btn no-pdf">← Volver</a>
+                        <a href="/Principal/" class="btn btn-primary regresar-btn">← Volver</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <!-- Importación de scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'js/IndexGrafico.js' %}"></script>

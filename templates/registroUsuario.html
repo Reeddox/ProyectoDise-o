@@ -28,15 +28,6 @@
                 <!-- Registro de Usuario -->
                 <div class="registro-container p-4 border rounded mb-5" style="background-color: #a8d8f0; width: 500px;">
                     <h1 class="text-center mb-4">Registro de usuario</h1>
-
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="message-container success fade-out alert alert-success">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-
                     <form id="usuario-form" method="POST">
                         {% csrf_token %}
                         <input type="hidden" id="usuario-id" name="usuario_id" value="">

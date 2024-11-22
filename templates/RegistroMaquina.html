@@ -33,26 +33,27 @@
                     <div class="form-group">
                         <label for="n_serie">N° Serie</label>
                         {{ form.n_serie|add_class:"form-control rounded-pill" }}
+                        <small class="text-danger">{{ form.n_serie.errors }}</small>
                     </div>
                     <div class="form-group">
                         <label for="modelo">Modelo</label>
                         {{ form.modelo|add_class:"form-control rounded-pill" }}
+                        <small class="text-danger">{{ form.modelo.errors }}</small>
                     </div>
                     <div class="form-group">
                         <label for="tipo">Tipo</label>
                         {{ form.tipo|add_class:"form-control rounded-pill" }}
+                        <small class="text-danger">{{ form.tipo.errors }}</small>
                     </div>
                     <div class="form-group">
                         <label for="capacidad">Capacidad</label>
                         {{ form.capacidad|add_class:"form-control rounded-pill" }}
-                    </div>
-                    <div class="form-group">
-                        <label for="estado">Estado</label>
-                        {{ form.estado|add_class:"form-control rounded-pill" }}
+                        <small class="text-danger">{{ form.capacidad.errors }}</small>
                     </div>
                     <div class="form-group">
                         <label for="img">Subir una imagen</label>
                         {{ form.img|add_class:"form-control-file" }}
+                        <small class="text-danger">{{ form.img.errors }}</small>
                     </div>
                     <div class="d-flex justify-content-around">
                         <button type="submit" class="btn btn-primary rounded-pill">Registrar</button>
