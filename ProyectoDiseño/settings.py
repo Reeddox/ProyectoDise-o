@@ -83,8 +83,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Disenio_Eva3',
-        'USER' : 'root',
-        'PASSWORD' : ''
+        'USER' : 'admin',
+        'PASSWORD' : 'evaluacion4',
+        'HOST' : 'bd-eva4.cn286cc0s6n6.us-east-2.rds.amazonaws.com',
+        'PORT' : '3306'
     }
 }
 
